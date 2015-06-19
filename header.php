@@ -159,7 +159,8 @@ function bl_create_item_list_page_init() {
 
 function bl_event_post_init(){
 	$options = get_option('bl_settings');
-	wp_enqueue_script('post_load', plugins_url( 'post_load.js', __FILE__));
+	wp_enqueue_script('post_load', plugins_url( 'post_load.js', __FILE__), array('jquery-ui-dialog', 'jquery-ui-widget'));
+	wp_enqueue_style("wp-jquery-ui-dialog");
 }
 
 add_action( 'wp_ajax_my_action', 'my_action_callback' );

@@ -25,6 +25,7 @@
 	        height: 300,
 	        width: 350,
 	        modal: true,
+	        dialogClass: 'wp-dialog',
 	        buttons: {
 	            "Close": function () {
 	                dialog.dialog("close");
