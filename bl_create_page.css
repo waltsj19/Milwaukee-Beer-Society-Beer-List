@@ -1,0 +1,122 @@
+#beerlist{
+	padding-top: 10px;
+}
+#beerlist p{
+	margin-top: 0px;
+	margin-bottom: 2px;
+}
+#beerlist input{
+	text-overflow: ellipsis;
+	font-size: 1em;
+	color: black;
+}
+
+#bl_search{
+	margin-left: 30px;
+	margin-bottom: 20px;
+}
+
+#bl_search_instructions{
+	font-style: italic;
+	padding-bottom: 30px;
+	padding-left: 60px;
+	
+}
+
+#beerlist p.item_inputs{
+	margin-left: 15px;
+	margin-right: 15px;
+}
+
+#beerlist p.item_inputs:last-child{
+	margin-bottom: 30px;
+}
+
+#beerlist input.bName{
+	width: 21%
+}
+#beerlist input.rName{
+	width: 24%;
+	
+}
+#beerlist input.rLocation{
+	width: 20%
+}
+#beerlist input.bStyle{
+	width: 18%
+}
+#beerlist input.bABV{
+	width: 8%
+}
+#beerlist input.bIBU{
+	width: 6%
+}
+
+#beerlist input.bCode, #beerlist input.bLabel{
+	display:none;
+}
+ .ui-autocomplete{
+		font-family: ProximaNova, 'Helvetica Neue', Helvetica;
+		/*line-height: 12px;*/
+   }
+   .ui-autocomplete .ac_item:first-child{
+	/*padding-top:0;*/
+   }
+   .ui-autocomplete .ac_item {
+      border-bottom: 1px solid #f2f2f2;
+      padding: 8px;
+	  height: 49px;
+      display: block;
+	  line-height: inherit;
+      -webkit-box-sizing: border-box;
+      -moz-box-sizing: border-box;
+      box-sizing: border-box; }
+      .ui-autocomplete .ac_item:last-child {
+       border-bottom: none; }
+      .ui-autocomplete .ac_item:hover {
+        background-color: #f8f8f8;
+		border:none;		}
+      .ui-autocomplete .ac_item .label {
+        width: 32px;
+        height: 32px;
+        display: inline-block;
+		padding: 0;
+		margin: 0;
+		/*vertical-align: bottom;*/
+         }
+        .ui-autocomplete .ac_item .label img {
+          width: 100%;
+		  }
+      .ui-autocomplete .ac_item .info {
+        display: inline-block;
+        /*vertical-align: top;*/
+        /*width: 180px;*/
+		height: 32px;
+		margin: 0;
+        padding-left: 8px;
+        /*padding-top: 2px; */}
+        .ui-autocomplete .ac_item .info .ac_beer, .ui-autocomplete .ac_item .info .ac_brewery {
+          display: block;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis; }
+        .ui-autocomplete .ac_item .ac_beer {
+          color: #333;
+          font-size: 1.108em;
+          font-weight: 600; }
+        .ui-autocomplete .ac_item .ac_brewery {
+          color: #999;
+          font-size: 0.887em;
+          line-height: 1.125em;
+		  padding-left: 0px;}
+    .search_box .ui-autocomplete .see-more-results {
+      background-color: #eee;
+      text-align: center;
+      padding: 12px;
+      font-weight: 600; }
+  
+.bl-active .switch-bl {
+  background: #f5f5f5;
+  color: #555;
+  border-bottom-color: #f5f5f5;
+}	
