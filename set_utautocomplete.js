@@ -213,6 +213,11 @@ jQuery.widget("ui.autocomplete", jQuery.ui.autocomplete, {
 				$(this).remove();
 			}
 		});
+		if($('#beerlist p.item_inputs').length === 0){
+			$('#bl_search_instructions').show();
+			$('#bl_headers').hide();
+			$('#bl_search').attr('placeholder', 'Enter Beer').val('');
+		}
     }
 
     function updateHtmlFromItems($item) {
