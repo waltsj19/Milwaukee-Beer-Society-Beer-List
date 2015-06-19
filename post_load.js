@@ -18,6 +18,7 @@
 
     //    window.location.href = "https://untappd.com/beer/" + bid;
     //});
+    $('<div>').load('dialog.html').appendTo('html');
     $('#bl_area .bl_item').click(click_Item);
 	function click_Item(event) {
 	    var dialog = $('#bl_dialog').dialog({
