@@ -19,7 +19,7 @@ function bl_set_default_settings() {
 
 function create_menu(){
 	//wp_localize_script('main','blah',array('meh'));
-	add_options_page('Item List with Untappd', 'Item List', 'manage_options', 'item-list-settings', 'create_options');
+	add_options_page('MBS Beer List', 'MBS Beer List', 'manage_options', 'item-list-settings', 'create_options');
 }
 function create_bl_event_menu(){
 	add_submenu_page('edit.php?post_type=tribe_events','Add New Item Tasting', 'Add New Item Tasting', 'edit_posts', 'post_new.php?post_type=item_list', 'bl_create_item_list_page');

@@ -62,7 +62,7 @@ jQuery.widget("ui.autocomplete", jQuery.ui.autocomplete, {
     var apikey = bl_settings.options;
     var ut_autocomplete = function (request, response) {
         $.ajax({
-            url: 'https://api.untappd.com/v4/search/beer?q=' + request.term + '&access_token=A2AC772581EA8C05BD9B244FB227CA7B4D6FBAF5&limit=8', //'&client_id=' + apikey.ut_clientid + '&client_secret=' + apikey.ut_clientsecret,
+            url: 'https://api.untappd.com/v4/search/beer?q=' + request.term + '&limit=' + apikey.bl_numberofbeers + '&client_id=' + apikey.ut_clientid + '&client_secret=' + apikey.ut_clientsecret,
             type: 'GET',
             async: true,
             contentType: 'application/json',
