@@ -23,8 +23,8 @@
 	function click_Item(event) {
 	    var dialog = $('#bl_dialog').dialog({
 	        autoOpen: true,
-	        height: 300,
-	        width: 350,
+	        //height: 300,
+	        //width: 350,
 	        modal: true,
 	        dialogClass: 'wp-dialog',
 	        buttons: {
