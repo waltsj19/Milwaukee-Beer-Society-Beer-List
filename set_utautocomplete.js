@@ -73,7 +73,7 @@ jQuery.widget("ui.autocomplete", jQuery.ui.autocomplete, {
     $('input.autocomplete').autocomplete({
         source: ut_autocomplete,
         autoFocus: true,
-        delay: 500,
+        delay: 300,
         minLength: 3,
         select: function (evt, ui) {
 			createInput(ui.item);
