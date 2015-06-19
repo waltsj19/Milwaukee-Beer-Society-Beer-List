@@ -23,7 +23,7 @@
 	
 }
 
-#beerlist p.item_inputs{
+#beerlist p.item_inputs, #bl_headers{
 	margin-left: 15px;
 	margin-right: 15px;
 }

@@ -37,7 +37,12 @@ jQuery.widget("ui.autocomplete", jQuery.ui.autocomplete, {
                 '<span>Add beers using the search box above</span>' +
 				'</p>' +
 				'<p id="bl_headers" style="display:none">' + 
-				'<span class="bName">bName</span>' + 
+				'<span class="bName">Beer Name</span>' + 
+				'<span class="rName">Brewery</span>' + 
+				'<span class="rLocation">Location</span>' + 
+				'<span class="bStyle">Beer Style</span>' + 
+				'<span class="bABV">ABV</span>' + 
+				'<span class="bIBU">IBU</span>' + 
 				'</p>';
 
     inputs += '</div>';
