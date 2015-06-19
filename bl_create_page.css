@@ -32,9 +32,11 @@
 	margin-bottom: 30px;
 }
 
-#bl_headers{
+#bl_headers span{
 	font-weight: 600;
+	display: inline-block;
 }
+
 #beerlist .bName{
 	width: 21%
 }
