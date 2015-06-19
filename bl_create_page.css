@@ -32,27 +32,29 @@
 	margin-bottom: 30px;
 }
 
-#beerlist input.bName{
+#bl_headers{
+	font-weight: 600;
+}
+#beerlist .bName{
 	width: 21%
 }
-#beerlist input.rName{
+#beerlist .rName{
 	width: 24%;
-	
 }
-#beerlist input.rLocation{
+#beerlist .rLocation{
 	width: 20%
 }
-#beerlist input.bStyle{
+#beerlist .bStyle{
 	width: 18%
 }
-#beerlist input.bABV{
+#beerlist .bABV{
 	width: 8%
 }
-#beerlist input.bIBU{
+#beerlist .bIBU{
 	width: 6%
 }
 
-#beerlist input.bCode, #beerlist input.bLabel{
+#beerlist .bCode, #beerlist .bLabel{
 	display:none;
 }
  .ui-autocomplete{

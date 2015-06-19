@@ -34,7 +34,11 @@ jQuery.widget("ui.autocomplete", jQuery.ui.autocomplete, {
                 '<h3>Beer List</h3>' +
                 '<input id="bl_search" type="text" class="item autocomplete" placeholder="Enter Beers"></input>' +
                 '<p id="bl_search_instructions">' +
-                '<span>Add beers using the search box above</span>';
+                '<span>Add beers using the search box above</span>' +
+				'</p>' +
+				'<p id="bl_headers" style="display:none">' + 
+				'<span class="bName">bName</span>' + 
+				'</p>';
 
     inputs += '</div>';
     $('div#postdivrich').after(inputs);
@@ -144,6 +148,7 @@ jQuery.widget("ui.autocomplete", jQuery.ui.autocomplete, {
 			});
 
 		$('#bl_search_instructions').hide();
+		$('#bl_headers').show();
 		$('#bl_search').attr('placeholder', 'Add Another Beer').val('');
         input_bName.change();
 	}
