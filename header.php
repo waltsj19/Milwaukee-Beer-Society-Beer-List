@@ -161,6 +161,8 @@ function bl_event_post_init(){
 	$options = get_option('bl_settings');
 	wp_enqueue_script('post_load', plugins_url( 'post_load.js', __FILE__), array('jquery-ui-dialog', 'jquery-ui-widget'));
 	wp_enqueue_style("wp-jquery-ui-dialog");
+	wp_localize_script('post_load','bl_settings',array('dialog_path' => plugins_url('dialog.html',__FILE__)));
+
 }
 
 add_action( 'wp_ajax_my_action', 'my_action_callback' );
