@@ -3,7 +3,7 @@
 Plugin Name: Milwaukee Beer Society Beer List
 
 Description: A beer list that pulls data from Untappd.
-Version:     0.5.0
+Version:     1.0 alpha3
 Author:      Steve Walter
 License:     GPL2
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -19,7 +19,7 @@ function bl_set_default_settings() {
 
 function create_menu(){
 	//wp_localize_script('main','blah',array('meh'));
-	add_options_page('Item List with Untappd', 'Item List', 'manage_options', 'item-list-settings', 'create_options');
+	add_options_page('MBS Beer List', 'MBS Beer List', 'manage_options', 'item-list-settings', 'create_options');
 }
 function create_bl_event_menu(){
 	add_submenu_page('edit.php?post_type=tribe_events','Add New Item Tasting', 'Add New Item Tasting', 'edit_posts', 'post_new.php?post_type=item_list', 'bl_create_item_list_page');
@@ -31,7 +31,7 @@ function create_options(){
 ?>
 	<div class="wrap">
 		<div class="icon32" id="icon-options-general"><br></div>
-		<h2>Item List with Untappd Settings</h2>
+		<h2>Milwaukee Beer Society Beer List Settings</h2>
 		Specify the API Keys given to you by Untappd.
 		<form action="options.php" method="post">
 		<?php settings_fields('bl_settings'); ?>
@@ -105,6 +105,7 @@ function bl_plugin_validate($input) {
 	// Check our textbox option field contains no HTML tags - if so strip them out
 	$input['ut_clientid'] =  wp_filter_nohtml_kses($input['ut_clientid']);	
 	$input['ut_clientsecret'] =  wp_filter_nohtml_kses($input['ut_clientsecret']);	
+	$input['bl_numberofbeers'] =  wp_filter_nohtml_kses($input['bl_numberofbeers']);	
 	return $input; // return validated input
 }
 

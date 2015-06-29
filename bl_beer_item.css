@@ -1,5 +1,9 @@
 #bl_area{
 	padding-left: 15px;
+	margin-bottom: 15px;
+}
+#bl_area p{
+	/*margin-bottom: 0px !important;*/
 }
 	#bl_area .bl_item {
       padding-top: 4px;

@@ -62,7 +62,7 @@ jQuery.widget("ui.autocomplete", jQuery.ui.autocomplete, {
     var apikey = bl_settings.options;
     var ut_autocomplete = function (request, response) {
         $.ajax({
-            url: 'https://api.untappd.com/v4/search/beer?q=' + request.term + '&access_token=A2AC772581EA8C05BD9B244FB227CA7B4D6FBAF5&limit=8', //'&client_id=' + apikey.ut_clientid + '&client_secret=' + apikey.ut_clientsecret,
+            url: 'https://api.untappd.com/v4/search/beer?q=' + request.term + '&limit=' + apikey.bl_numberofbeers + '&client_id=' + apikey.ut_clientid + '&client_secret=' + apikey.ut_clientsecret,
             type: 'GET',
             async: true,
             contentType: 'application/json',
@@ -128,7 +128,7 @@ jQuery.widget("ui.autocomplete", jQuery.ui.autocomplete, {
 		var pos = 0;
 		if($last_child.length > 0)
 			pos = $last_child.attr('data-pos') * 1 + 1;
-		var p_inputs = $('<p id="item_' + pos + '" class="item_inputs" data-pos=' + pos + ' data-bid=' + bid + '>');
+		var p_inputs = $('<p id="item_' + pos + '" class="item_inputs" data-pos=' + pos + ' data-bid=' + bid + '>').data('beer',item);
 		var input_bName = $('<input>').attr("id", "input_bName_" + pos).addClass("bName").val(bName);
 		var input_rName = $('<input>').attr("id", "input_rName_" + pos).addClass("rName").val(rName);
 		var input_rLocation = $('<input>').attr("id", "input_rLocation_" + pos).addClass("rLocation").val(rLocation);
@@ -136,7 +136,7 @@ jQuery.widget("ui.autocomplete", jQuery.ui.autocomplete, {
 		var input_bABV = $('<input>').attr("id", "input_bABV_" + pos).addClass("bABV").val(bABV);
 		var input_bIBU = $('<input>').attr("id", "input_bIBU_" + pos).addClass("bIBU").val(bIBU);
 		var input_bLabel = $('<input>').attr("id", "input_bLabel_" + pos).addClass("bLabel").val(bLabel);
-		var input_bCode = $('<input>').attr("id", "input_bCode_" + pos).addClass("bCode");
+		//var input_bCode = $('<input>').attr("id", "input_bCode_" + pos).addClass("bCode").val(JSON.stringify(item));
 		input_bName.appendTo(p_inputs);
 		input_rName.appendTo(p_inputs);
 		input_rLocation.appendTo(p_inputs);
@@ -144,11 +144,12 @@ jQuery.widget("ui.autocomplete", jQuery.ui.autocomplete, {
 		input_bABV.appendTo(p_inputs);
 		input_bIBU.appendTo(p_inputs);
 		input_bLabel.appendTo(p_inputs);
-		input_bCode.appendTo(p_inputs);
+		//input_bCode.appendTo(p_inputs);
 		p_inputs.appendTo('#beerlist');
 		p_inputs.children('input')
 			.attr("data-pos",pos)
 			.change(function (event) {
+				//updateObjFromInputs($(this).parent());
 				updateHtmlFromItems($(this).parent());
 			});
 
@@ -157,70 +158,20 @@ jQuery.widget("ui.autocomplete", jQuery.ui.autocomplete, {
 		$('#bl_search').attr('placeholder', 'Add Another Beer').val('');
         input_bName.change();
 	}
-
-    function updateItemsFromHtml(editor_html) {
-        var $html = $('<div>');
-        $html.html(editor_html);
-        var $blArea = $html.find('#bl_area');
-        //if ($blArea.length === 0)
-        //    return false;
-        var $listItems = $blArea.find('li.bl_item');
-        $listItems.each(function (idx, elem) {
-            var $elem = $(elem);
-            var pos = $elem.attr('data-pos');
-			var bid = $elem.attr('data-bid');
-            var bName = $elem.find('.bl_beer').text();
-            var rName = $elem.find('.bl_brewery').text();
-            var rLocation = $elem.find('.bl_location').text().replace('(','').replace(')','');
-            var bStyle = $elem.find('.bl_style').text();
-            var bABV = $elem.find('.bl_abv').text();
-            var bIBU = $elem.find('.bl_ibu').text();
-			var bLabel = $elem.css('background-image');
-			if($('#input_bName_' + pos).length > 0){
-				$('#input_bName_' + pos).val(bName);
-				$('#input_rName_' + pos).val(rName);
-				$('#input_rLocation_' + pos).val(rLocation);
-				$('#input_bStyle_' + pos).val(bStyle);
-				$('#input_bABV_' + pos).val(bABV);
-				$('#input_bIBU_' + pos).val(bIBU);
-				$('#input_bLabel_' + pos).val(bLabel)
-			}else{
-				var item = {
-					beer: {
-						 beer_name: bName
-						,beer_style: bStyle
-						,beer_abv: bABV
-						,beer_ibu: bIBU
-						,beer_label: bLabel
-					},
-					brewery: {
-						 brewery_name: rName
-						,brewer_city_state: rLocation						
-					}
-				};
-				createInput(item);
-			}
-        });
-		$('#beerlist p.item_inputs').each(function(idx, elem){
-			var pos = $(elem).attr('data-pos');
-			var $deleteme = $.grep($listItems,function(elem2, idx2){
-				if($(elem2).attr('data-pos') === pos)
-					return true;
-				else
-					return false;
-			});
-			if($deleteme.length === 0){
-				$(this).remove();
-			}
-		});
-		if($('#beerlist p.item_inputs').length === 0){
-			$('#bl_search_instructions').show();
-			$('#bl_headers').hide();
-			$('#bl_search').attr('placeholder', 'Enter Beer').val('');
-		}
-    }
-
-    function updateHtmlFromItems($item) {
+	
+	function updateObjFromInputs($p){
+		var obj = $p.data('beer');
+		obj.beer.beer_name = $p.children('input.bName').val();
+		obj.beer.beer_style = $p.children('input.bStyle').val();
+		obj.beer.beer_abv = $p.children('input.bABV').val();
+		obj.beer.beer_ibu = $p.children('input.bIBU').val();
+		obj.brewery.brewery_name = $p.children('input.rName').val();
+		obj.brewery.custom_location = $p.children('input.rLocation').val();
+		$p.data('beer',obj);
+	}
+	
+	function updateHtmlFromItems($item) {
+		var obj = $item.data('beer');
         var bName = $item.children('input.bName').val();
         var rName = $item.children('input.rName').val();
         var rLocation = $item.children('input.rLocation').val();
@@ -228,9 +179,9 @@ jQuery.widget("ui.autocomplete", jQuery.ui.autocomplete, {
         var bABV = $item.children('input.bABV').val();
         var bIBU = $item.children('input.bIBU').val();
         var bLabel = $item.children('input.bLabel').val();
-
-        var pos = $item.attr('data-pos');
-		var bid = $item.attr('data-bid');
+		//var bCode = $item.children('input.bCode').val();
+        var pos = $item.data('pos');//attr('data-pos');
+		var bid = $item.data('bid');//attr('data-bid');
         var $editor = $('#wp-content-editor-container textarea');
         var $html = $('<div>');
         var editor_html = $editor.val();
@@ -242,7 +193,7 @@ jQuery.widget("ui.autocomplete", jQuery.ui.autocomplete, {
             $blArea.appendTo($html);
         }
         var $listItem = $blArea.find('li.bl_item[data-pos=' + pos + ']');
-        var li = $("<li data-pos=" + pos + " data-bid=" + bid + " class='bl_item'>");
+        var li = $("<li data-pos=" + pos + " data-bid=" + bid + " class='bl_item'>").data('beer',obj);
 		li.css("background-image",bLabel);
 		li.css("background-position","0px 4px");
 		li.css("background-size","40px 40px");
@@ -267,6 +218,7 @@ jQuery.widget("ui.autocomplete", jQuery.ui.autocomplete, {
             .text(bStyle);
         var span_deets = jQuery("<span class='bl_deets'>")
             .html('ABV: <span class="bl_abv">' + bABV + '</span>%' + (bIBU === '' ? '' : ', IBU: <span class="bl_ibu">' + bIBU + '</span>'));
+		var span_hidden = jQuery("<span class='bl_code' style='display:none'>");
         p_other.append(span_style);
         p_other.append(span_deets);
         div_bones.append(p_other);
@@ -274,12 +226,78 @@ jQuery.widget("ui.autocomplete", jQuery.ui.autocomplete, {
         li.append(div_bones);
 
         if ($listItem.length === 0)
-            li.appendTo($blArea);
+			$blArea.append("\n<!----------" + bName + "---------->\n" + li.get()[0].outerHTML)
         else
             $listItem.replaceWith(li.get()[0].outerHTML);
 
         $editor.val($html.html());
     }
+
+    function updateItemsFromHtml(editor_html) {
+        var $html = $('<div>');
+        $html.html(editor_html);
+        var $blArea = $html.find('#bl_area');
+        var $listItems = $blArea.find('li.bl_item');
+        $listItems.each(function (idx, elem) {
+            var $elem = $(elem);
+            var pos = $elem.data('pos');
+			var bid = $elem.data('bid');
+            var bName = $elem.find('.bl_beer').text();
+            var rName = $elem.find('.bl_brewery').text();
+            var rLocation = $elem.find('.bl_location').text().replace('(','').replace(')','');
+            var bStyle = $elem.find('.bl_style').text();
+            var bABV = $elem.find('.bl_abv').text();
+            var bIBU = $elem.find('.bl_ibu').text();
+			var bLabel = $elem.css('background-image');
+			//var bCode = $elem.find('.bl_co)
+			
+			if($('#input_bName_' + pos).length > 0){
+				$('#input_bName_' + pos).val(bName);
+				$('#input_rName_' + pos).val(rName);
+
+				$('#input_rLocation_' + pos).val(rLocation);
+				$('#input_bStyle_' + pos).val(bStyle);
+				$('#input_bABV_' + pos).val(bABV);
+				$('#input_bIBU_' + pos).val(bIBU);
+				//$('#input_bLabel_' + pos).val(bLabel)
+			}else{
+				var item = {
+					beer: {
+						 bid: bid
+						,beer_name: bName
+						,beer_style: bStyle
+						,beer_abv: bABV
+						,beer_ibu: bIBU
+						,beer_label: bLabel
+					},
+					brewery: {
+						 brewery_name: rName
+						,brewer_city_state: rLocation						
+					}
+				};
+				createInput(item);
+			}
+        });
+		$('#beerlist p.item_inputs').each(function(idx, elem){
+			var pos = $(elem).data('pos');
+			var $deleteme = $.grep($listItems,function(elem2, idx2){
+				if($(elem2).data('pos') === pos)
+					return true;
+				else
+					return false;
+			});
+			if($deleteme.length === 0){
+				$(this).remove();
+			}
+		});
+		if($('#beerlist p.item_inputs').length === 0){
+			$('#bl_search_instructions').show();
+			$('#bl_headers').hide();
+			$('#bl_search').attr('placeholder', 'Enter Beer').val('');
+		}
+    }
+
+
 
 }(jQuery));
 
