@@ -18,6 +18,9 @@ jQuery.widget("ui.autocomplete", jQuery.ui.autocomplete, {
     },
 });
 (function ($) {
+	$(window).resize(function(){
+		applyMobileStyles();
+	});
     //var output = $('#postdivrich textarea.wp-editor-area');
     var postdivrich = $('#postdivrich');
     var bl_button = postdivrich
@@ -305,6 +308,21 @@ jQuery.widget("ui.autocomplete", jQuery.ui.autocomplete, {
 				fontSize: "1em",
 				verticalAlign: "bottom"
 			});
+		li.hover(
+			function(){
+				$(this).css({
+					backgroundColor: "#eee",
+					cursor: "pointer"
+				});
+			},
+			function(){
+				$(this).css({
+					backgroundColor: "inherit"",
+					cursor: "inherit"
+				});
+			});
+		if($(window).width() <= 550)
+			applyMobileStyles($blArea);
 
         if ($listItem.length === 0)
 			$blArea.append("\n<!----------" + bName + "---------->\n" + li.get()[0].outerHTML)
@@ -313,6 +331,22 @@ jQuery.widget("ui.autocomplete", jQuery.ui.autocomplete, {
 
         $editor.val($html.html());
     }
+	
+	function applyMobileStyles($area){
+		if(!$area)
+			$area = $('#bl_area');
+		$area.find('.meat')
+			.css("width","100%");
+		$area.find('.bones,.bl_location')
+			.css("display","none");
+		$area.find('.bl_beer')
+			.css("height","16px");
+		$area.css("padding-left","0");
+		$area.find('.bl_item')
+			.css("padding-left","44px");
+		$area.find('.info')
+			.css("padding-left","0");
+	}
 
     function updateItemsFromHtml(editor_html) {
         var $html = $('<div>');
