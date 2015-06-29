@@ -209,10 +209,7 @@ jQuery.widget("ui.autocomplete", jQuery.ui.autocomplete, {
 			lineHeight: "inherit",
 			boxSizing: "border-box"
 		});
-		li.css("background-image",bLabel);
-		li.css("background-position","0px 4px");
-		li.css("background-size","40px 40px");
-		li.css("background-repeat","no-repeat");
+
         //creating the initial code to place on the page and placing in hidden input (input_bCode);
 
         var div_meat = jQuery("<div class='meat'>");
