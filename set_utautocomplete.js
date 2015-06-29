@@ -282,8 +282,8 @@ jQuery.widget("ui.autocomplete", jQuery.ui.autocomplete, {
 			textOverflow: "ellipsis"
 		}
         var span_style = jQuery("<span class='bl_style'>")
-            .text(bStyle);
-			.css(css_bones_p_span)
+            .text(bStyle)
+			.css(css_bones_p_span);
         var span_deets = jQuery("<span class='bl_deets'>")
             .html('ABV: <span class="bl_abv">' + bABV + '</span>%' + (bIBU === '' ? '' : ', IBU: <span class="bl_ibu">' + bIBU + '</span>'))
 			.css(css_bones_p_span);
