@@ -190,8 +190,8 @@ jQuery.widget("ui.autocomplete", jQuery.ui.autocomplete, {
         var $blArea = $html.find('#bl_area');
         if ($blArea.length === 0) {
             $blArea = $('<div id="bl_area">').css({
-				'paddingLeft': 15px,
-				'marginBottom': 15px
+				paddingLeft: '15px',
+				marginBottom: '15px'
 			});
             $blArea.appendTo($html);
         }
