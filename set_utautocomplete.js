@@ -189,7 +189,10 @@ jQuery.widget("ui.autocomplete", jQuery.ui.autocomplete, {
 
         var $blArea = $html.find('#bl_area');
         if ($blArea.length === 0) {
-            $blArea = $('<div id="bl_area">');
+            $blArea = $('<div id="bl_area">').css({
+				padding-left: 15px,
+				margin-bottom: 15px
+			});
             $blArea.appendTo($html);
         }
         var $listItem = $blArea.find('li.bl_item[data-pos=' + pos + ']');
