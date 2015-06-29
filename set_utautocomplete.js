@@ -332,31 +332,31 @@ jQuery.widget("ui.autocomplete", jQuery.ui.autocomplete, {
 		if(!$area)
 			$area = $('#bl_area');
 		
-		var mobile_css = "<style>
-						@media screen and (max-width: 550px) {
-							#bl_area .bl_item .meat {
-								width: 100%;
-							}
-							#bl_area .bl_item .bones {
-								display:none;
-							}
-							#bl_area .bl_item .bl_beer {
-								height: 16px;
-							}
-							#bl_area .bl_item .info .bl_location{
-								display:none;
-							}
-							#bl_area{
-								padding-left: 0px;
-							}
-							#bl_area .bl_item {
-								padding-left: 44px;
-							}
-							#bl_area .bl_item .info {
-								padding-left: 0px;
-							}
-						}
-						</style>";
+		var mobile_css = "<style>" +
+						"@media screen and (max-width: 550px) {" + 
+							"#bl_area .bl_item .meat {" +
+								"width: 100%;" + 
+							"}" + 
+							"#bl_area .bl_item .bones {" + 
+								"display:none;" + 
+							"}" + 
+							"#bl_area .bl_item .bl_beer {" + 
+								"height: 16px;" + 
+							"}" + 
+							"#bl_area .bl_item .info .bl_location{" + 
+								"display:none;" + 
+							"}" + 
+							"#bl_area{" + 
+								"padding-left: 0px;" + 
+							"}" + 
+							"#bl_area .bl_item {" + 
+								"padding-left: 44px;" + 
+							"}" + 
+							"#bl_area .bl_item .info {" + 
+								"padding-left: 0px;" + 
+							"}" + 
+						"}" + 
+						"</style>";
 		$area.append(mobile_css);
 	}
 
