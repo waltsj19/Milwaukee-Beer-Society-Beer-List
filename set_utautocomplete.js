@@ -317,7 +317,7 @@ jQuery.widget("ui.autocomplete", jQuery.ui.autocomplete, {
 			},
 			function(){
 				$(this).css({
-					backgroundColor: "inherit"",
+					backgroundColor: "inherit",
 					cursor: "inherit"
 				});
 			});
