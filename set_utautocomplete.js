@@ -18,9 +18,6 @@ jQuery.widget("ui.autocomplete", jQuery.ui.autocomplete, {
     },
 });
 (function ($) {
-	$(window).resize(function(){
-		applyMobileStyles();
-	});
     //var output = $('#postdivrich textarea.wp-editor-area');
     var postdivrich = $('#postdivrich');
     var bl_button = postdivrich
@@ -196,6 +193,7 @@ jQuery.widget("ui.autocomplete", jQuery.ui.autocomplete, {
 				paddingLeft: '15px',
 				marginBottom: '15px'
 			});
+			applyMobileStyles($blArea);
             $blArea.appendTo($html);
         }
         var $listItem = $blArea.find('li.bl_item[data-pos=' + pos + ']');
@@ -321,8 +319,6 @@ jQuery.widget("ui.autocomplete", jQuery.ui.autocomplete, {
 					cursor: "inherit"
 				});
 			});
-		if($(window).width() <= 550)
-			applyMobileStyles($blArea);
 
         if ($listItem.length === 0)
 			$blArea.append("\n<!----------" + bName + "---------->\n" + li.get()[0].outerHTML)
@@ -335,17 +331,33 @@ jQuery.widget("ui.autocomplete", jQuery.ui.autocomplete, {
 	function applyMobileStyles($area){
 		if(!$area)
 			$area = $('#bl_area');
-		$area.find('.meat')
-			.css("width","100%");
-		$area.find('.bones,.bl_location')
-			.css("display","none");
-		$area.find('.bl_beer')
-			.css("height","16px");
-		$area.css("padding-left","0");
-		$area.find('.bl_item')
-			.css("padding-left","44px");
-		$area.find('.info')
-			.css("padding-left","0");
+		
+		var mobile_css = "<style>
+						@media screen and (max-width: 550px) {
+							#bl_area .bl_item .meat {
+								width: 100%;
+							}
+							#bl_area .bl_item .bones {
+								display:none;
+							}
+							#bl_area .bl_item .bl_beer {
+								height: 16px;
+							}
+							#bl_area .bl_item .info .bl_location{
+								display:none;
+							}
+							#bl_area{
+								padding-left: 0px;
+							}
+							#bl_area .bl_item {
+								padding-left: 44px;
+							}
+							#bl_area .bl_item .info {
+								padding-left: 0px;
+							}
+						}
+						</style>";
+		$area.append(mobile_css);
 	}
 
     function updateItemsFromHtml(editor_html) {
