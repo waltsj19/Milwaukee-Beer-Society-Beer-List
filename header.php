@@ -3,11 +3,7 @@
 Plugin Name: Milwaukee Beer Society Beer List
 
 Description: A beer list that pulls data from Untappd.
-<<<<<<< HEAD
 Version:     1.0.1
-=======
-Version:     1.0 alpha3
->>>>>>> origin/master
 Author:      Steve Walter
 License:     GPL2
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
