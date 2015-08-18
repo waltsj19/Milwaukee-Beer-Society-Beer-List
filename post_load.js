@@ -1,8 +1,8 @@
 (function ($) {
 	$('#bl_area .bl_item').click(function(e){
-		var bid = $(this).attr('data-bid');
+		var bid = $(this).data('bid');
 		var isSmartphone = ( navigator.userAgent.match(/(iPad|iPhone|iPod|Android)/gi) ? true : false );
-		var urlprefix = isSmartphone ? "untappd:///?beer=" : "https://untappd.com/beer/";
+		//var urlprefix = isSmartphone ? "untappd:///?beer=" : "https://untappd.com/beer/";
         if(isSmartphone){
             var now = new Date().valueOf();
             setTimeout(function () {

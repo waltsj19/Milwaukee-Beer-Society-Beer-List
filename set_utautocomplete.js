@@ -18,6 +18,9 @@ jQuery.widget("ui.autocomplete", jQuery.ui.autocomplete, {
     },
 });
 (function ($) {
+	var fontFamily = "'Open Sans','Arial','Helvetica','sans-serif'";
+	var fontSize = ".887em";
+	
     //var output = $('#postdivrich textarea.wp-editor-area');
     var postdivrich = $('#postdivrich');
     var bl_button = postdivrich
@@ -46,7 +49,7 @@ jQuery.widget("ui.autocomplete", jQuery.ui.autocomplete, {
 				'</p>';
 
     inputs += '</div>';
-    $('div#postdivrich').after(inputs);
+    $('#postdivrich').after(inputs);
     tabs.find('button:not(#content-bl)').click(function (event) {
         $('#wp-content-editor-container,#post-status-info').show();
         $('#wp-content-wrap').removeClass('bl-active');
@@ -61,8 +64,14 @@ jQuery.widget("ui.autocomplete", jQuery.ui.autocomplete, {
 
     var apikey = bl_settings.options;
     var ut_autocomplete = function (request, response) {
+		var result = testdata;
+		var filtered = $.each(result.response.beers.items, function (index, brew) {
+			brew.label = brew.brewery.brewery_name + ' ' + brew.beer.beer_name;
+			brew.value = brew.beer.beer_name;
+		});
+		response(filtered); return;
         $.ajax({
-            url: 'https://api.untappd.com/v4/search/beer?q=' + request.term + '&access_token=A2AC772581EA8C05BD9B244FB227CA7B4D6FBAF5&limit=8', //'&client_id=' + apikey.ut_clientid + '&client_secret=' + apikey.ut_clientsecret,
+            url: 'https://api.untappd.com/v4/search/beer?q=' + request.term + '&limit=' + apikey.bl_numberofbeers + '&client_id=' + apikey.ut_clientid + '&client_secret=' + apikey.ut_clientsecret,
             type: 'GET',
             async: true,
             contentType: 'application/json',
@@ -74,6 +83,7 @@ jQuery.widget("ui.autocomplete", jQuery.ui.autocomplete, {
                 response(filtered);
             }
         });
+
     }
     $('input.autocomplete').autocomplete({
         source: ut_autocomplete,
@@ -128,7 +138,7 @@ jQuery.widget("ui.autocomplete", jQuery.ui.autocomplete, {
 		var pos = 0;
 		if($last_child.length > 0)
 			pos = $last_child.attr('data-pos') * 1 + 1;
-		var p_inputs = $('<p id="item_' + pos + '" class="item_inputs" data-pos=' + pos + ' data-bid=' + bid + '>');
+		var p_inputs = $('<p id="item_' + pos + '" class="item_inputs" data-pos=' + pos + ' data-bid=' + bid + '>').data('beer',item);
 		var input_bName = $('<input>').attr("id", "input_bName_" + pos).addClass("bName").val(bName);
 		var input_rName = $('<input>').attr("id", "input_rName_" + pos).addClass("rName").val(rName);
 		var input_rLocation = $('<input>').attr("id", "input_rLocation_" + pos).addClass("rLocation").val(rLocation);
@@ -136,7 +146,7 @@ jQuery.widget("ui.autocomplete", jQuery.ui.autocomplete, {
 		var input_bABV = $('<input>').attr("id", "input_bABV_" + pos).addClass("bABV").val(bABV);
 		var input_bIBU = $('<input>').attr("id", "input_bIBU_" + pos).addClass("bIBU").val(bIBU);
 		var input_bLabel = $('<input>').attr("id", "input_bLabel_" + pos).addClass("bLabel").val(bLabel);
-		var input_bCode = $('<input>').attr("id", "input_bCode_" + pos).addClass("bCode");
+		//var input_bCode = $('<input>').attr("id", "input_bCode_" + pos).addClass("bCode").val(JSON.stringify(item));
 		input_bName.appendTo(p_inputs);
 		input_rName.appendTo(p_inputs);
 		input_rLocation.appendTo(p_inputs);
@@ -144,11 +154,12 @@ jQuery.widget("ui.autocomplete", jQuery.ui.autocomplete, {
 		input_bABV.appendTo(p_inputs);
 		input_bIBU.appendTo(p_inputs);
 		input_bLabel.appendTo(p_inputs);
-		input_bCode.appendTo(p_inputs);
+		//input_bCode.appendTo(p_inputs);
 		p_inputs.appendTo('#beerlist');
 		p_inputs.children('input')
 			.attr("data-pos",pos)
 			.change(function (event) {
+				//updateObjFromInputs($(this).parent());
 				updateHtmlFromItems($(this).parent());
 			});
 
@@ -157,18 +168,150 @@ jQuery.widget("ui.autocomplete", jQuery.ui.autocomplete, {
 		$('#bl_search').attr('placeholder', 'Add Another Beer').val('');
         input_bName.change();
 	}
+	
+	function updateObjFromInputs($p){
+		var obj = $p.data('beer');
+		obj.beer.beer_name = $p.children('input.bName').val();
+		obj.beer.beer_style = $p.children('input.bStyle').val();
+		obj.beer.beer_abv = $p.children('input.bABV').val();
+		obj.beer.beer_ibu = $p.children('input.bIBU').val();
+		obj.brewery.brewery_name = $p.children('input.rName').val();
+		obj.brewery.custom_location = $p.children('input.rLocation').val();
+		$p.data('beer',obj);
+	}
+	
+	function updateHtmlFromItems($item) {
+		var obj = $item.data('beer');
+        var bName = $item.children('input.bName').val();
+        var rName = $item.children('input.rName').val();
+        var rLocation = $item.children('input.rLocation').val();
+        var bStyle = $item.children('input.bStyle').val();
+        var bABV = $item.children('input.bABV').val();
+        var bIBU = $item.children('input.bIBU').val();
+        var bLabel = $item.children('input.bLabel').val();
+		//var bCode = $item.children('input.bCode').val();
+        var pos = $item.data('pos');//attr('data-pos');
+		var bid = $item.data('bid');//attr('data-bid');
+        var $editor = $('#wp-content-editor-container textarea');
+        var $html = $('<div>');
+        var editor_html = $editor.val();
+        $html.html(editor_html);
+
+        var $blArea = $html.find('#bl_area');
+		var $ul = $blArea.find('ul');
+        if ($blArea.length === 0) {
+            $blArea = $('<div id="bl_area">')
+				.css("font-family",fontFamily)
+				.css("font-size",fontSize);
+			$ul = $('<ul style="list-style-type: none">');
+			$ul.appendTo($blArea);
+            $blArea.appendTo($html);
+        }
+        var $listItem = $blArea.find('li.bl_item[data-pos=' + pos + ']');
+        var li = $("<li data-pos=" + pos + " data-bid=" + bid + " class='bl_item'>")
+			.data('beer',obj)
+			.css("background-image",bLabel)
+			.css("background-position","0px 4px")
+			.css("background-size","40px 40px")
+			.css("background-repeat","no-repeat")
+			.css("padding","4px 8px 12px 56px")
+			.css("margin",0)
+			.css("height","49px")
+			.css("display","block")
+			.css("line-height","inherit")
+			.css("vertical-align","top");
+        //creating the initial code to place on the page and placing in hidden input (input_bCode);
+
+        var div_meat = jQuery("<div class='meat'>")
+			.css("display","inline-block")
+			.css("width","65%");
+        var div_bones = jQuery("<div class='bones'>")
+			.css("display","inline-block")
+			.css("width","34%")
+			.css("vertical-align","top")
+			.css("margin-top","4px");
+        var p_info = jQuery("<p class='info'>")
+			.css("line-height","1.3");
+        var span_beer = jQuery("<span class='bl_beer'>")
+            .text(bName)
+			.css({
+				fontSize:"1.108em",
+				fontWeight: 600,
+				display:"block",
+				color: "#333",
+				whiteSpace: "nowrap",
+				overflow: "hidden",
+				textOverflow: "ellipsis"
+			});
+        var span_brewery = jQuery("<span class='bl_brewery'>")
+            .text(rName)
+			.css({
+				lineHeight: "1.125",
+				color: "#666",
+				whiteSpace: "nowrap",
+				overflow: "hidden",
+				textOverflow: "ellipsis"
+			});
+        var span_location = jQuery("<span class='bl_location'>")
+            .text("(" + rLocation + ")")
+			.css({
+				lineHeight: "1.125",
+				color: "#666",
+				whiteSpace: "nowrap",
+				overflow: "hidden",
+				textOverflow: "ellipsis"
+			});
+        p_info.append(span_beer);
+        p_info.append(span_brewery);
+        p_info.append(span_location);
+        div_meat.append(p_info);
+        var p_other = jQuery("<p class='other'>")
+			.css("line-height", "1.3");
+        var span_style = jQuery("<span class='bl_style'>")
+            .text(bStyle)
+			.css({
+				display: "block",
+				lineHeight: "1.125",
+				color: "#666",
+				whiteSpace: "nowrap",
+				overflow: "hidden",
+				textOverflow: "ellipsis"
+			});
+        var span_deets = jQuery("<span class='bl_deets'>")
+            .html('ABV: <span class="bl_abv" style="color:#666;">' + bABV + '</span>%' + (bIBU === '' ? '' : ', IBU: <span class="bl_ibu" style="color:#666;">' + bIBU + '</span>'))
+			.css({
+				display: "block",
+				lineHeight: "1.125",
+				color: "#666",
+				whiteSpace: "nowrap",
+				overflow: "hidden",
+				textOverflow: "ellipsis"
+			});
+
+		var span_hidden = jQuery("<span class='bl_code' style='display:none'>");
+        p_other.append(span_style);
+        p_other.append(span_deets);
+        div_bones.append(p_other);
+        li.append(div_meat);
+        li.append(div_bones);
+
+        if ($listItem.length === 0)
+			$ul.append("\n<!----------" + bName + "---------->\n" + li.get()[0].outerHTML)
+        else
+            $listItem.replaceWith(li.get()[0].outerHTML);
+
+        $editor.val($html.html());
+    }
 
     function updateItemsFromHtml(editor_html) {
         var $html = $('<div>');
         $html.html(editor_html);
         var $blArea = $html.find('#bl_area');
-        //if ($blArea.length === 0)
-        //    return false;
         var $listItems = $blArea.find('li.bl_item');
         $listItems.each(function (idx, elem) {
             var $elem = $(elem);
-            var pos = $elem.attr('data-pos');
-			var bid = $elem.attr('data-bid');
+            var pos = $elem.data('pos');
+			var bid = $elem.data('bid');
             var bName = $elem.find('.bl_beer').text();
             var rName = $elem.find('.bl_brewery').text();
             var rLocation = $elem.find('.bl_location').text().replace('(','').replace(')','');
@@ -176,18 +319,22 @@ jQuery.widget("ui.autocomplete", jQuery.ui.autocomplete, {
             var bABV = $elem.find('.bl_abv').text();
             var bIBU = $elem.find('.bl_ibu').text();
 			var bLabel = $elem.css('background-image');
+			//var bCode = $elem.find('.bl_co)
+			
 			if($('#input_bName_' + pos).length > 0){
 				$('#input_bName_' + pos).val(bName);
 				$('#input_rName_' + pos).val(rName);
+
 				$('#input_rLocation_' + pos).val(rLocation);
 				$('#input_bStyle_' + pos).val(bStyle);
 				$('#input_bABV_' + pos).val(bABV);
 				$('#input_bIBU_' + pos).val(bIBU);
-				$('#input_bLabel_' + pos).val(bLabel)
+				//$('#input_bLabel_' + pos).val(bLabel)
 			}else{
 				var item = {
 					beer: {
-						 beer_name: bName
+						 bid: bid
+						,beer_name: bName
 						,beer_style: bStyle
 						,beer_abv: bABV
 						,beer_ibu: bIBU
@@ -202,9 +349,9 @@ jQuery.widget("ui.autocomplete", jQuery.ui.autocomplete, {
 			}
         });
 		$('#beerlist p.item_inputs').each(function(idx, elem){
-			var pos = $(elem).attr('data-pos');
+			var pos = $(elem).data('pos');
 			var $deleteme = $.grep($listItems,function(elem2, idx2){
-				if($(elem2).attr('data-pos') === pos)
+				if($(elem2).data('pos') === pos)
 					return true;
 				else
 					return false;
@@ -220,66 +367,7 @@ jQuery.widget("ui.autocomplete", jQuery.ui.autocomplete, {
 		}
     }
 
-    function updateHtmlFromItems($item) {
-        var bName = $item.children('input.bName').val();
-        var rName = $item.children('input.rName').val();
-        var rLocation = $item.children('input.rLocation').val();
-        var bStyle = $item.children('input.bStyle').val();
-        var bABV = $item.children('input.bABV').val();
-        var bIBU = $item.children('input.bIBU').val();
-        var bLabel = $item.children('input.bLabel').val();
 
-        var pos = $item.attr('data-pos');
-		var bid = $item.attr('data-bid');
-        var $editor = $('#wp-content-editor-container textarea');
-        var $html = $('<div>');
-        var editor_html = $editor.val();
-        $html.html(editor_html);
-
-        var $blArea = $html.find('#bl_area');
-        if ($blArea.length === 0) {
-            $blArea = $('<div id="bl_area">');
-            $blArea.appendTo($html);
-        }
-        var $listItem = $blArea.find('li.bl_item[data-pos=' + pos + ']');
-        var li = $("<li data-pos=" + pos + " data-bid=" + bid + " class='bl_item'>");
-		li.css("background-image",bLabel);
-		li.css("background-position","0px 4px");
-		li.css("background-size","40px 40px");
-		li.css("background-repeat","no-repeat");
-        //creating the initial code to place on the page and placing in hidden input (input_bCode);
-
-        var div_meat = jQuery("<div class='meat'>");
-        var div_bones = jQuery("<div class='bones'>");
-        var p_info = jQuery("<p class='info'>");
-        var span_beer = jQuery("<span class='bl_beer'>")
-            .text(bName);
-        var span_brewery = jQuery("<span class='bl_brewery'>")
-            .text(rName);
-        var span_location = jQuery("<span class='bl_location'>")
-            .text("(" + rLocation + ")");
-        p_info.append(span_beer);
-        p_info.append(span_brewery);
-        p_info.append(span_location);
-        div_meat.append(p_info);
-        var p_other = jQuery("<p class='other'>");
-        var span_style = jQuery("<span class='bl_style'>")
-            .text(bStyle);
-        var span_deets = jQuery("<span class='bl_deets'>")
-            .html('ABV: <span class="bl_abv">' + bABV + '</span>%' + (bIBU === '' ? '' : ', IBU: <span class="bl_ibu">' + bIBU + '</span>'));
-        p_other.append(span_style);
-        p_other.append(span_deets);
-        div_bones.append(p_other);
-        li.append(div_meat);
-        li.append(div_bones);
-
-        if ($listItem.length === 0)
-            li.appendTo($blArea);
-        else
-            $listItem.replaceWith(li.get()[0].outerHTML);
-
-        $editor.val($html.html());
-    }
 
 }(jQuery));
 
