@@ -198,6 +198,7 @@ jQuery.widget("ui.autocomplete", jQuery.ui.autocomplete, {
         $html.html(editor_html);
 
         var $blArea = $html.find('#bl_area');
+<<<<<<< HEAD
 		var $ul = $blArea.find('ul');
         if ($blArea.length === 0) {
             $blArea = $('<div id="bl_area">')
@@ -261,10 +262,88 @@ jQuery.widget("ui.autocomplete", jQuery.ui.autocomplete, {
 				overflow: "hidden",
 				textOverflow: "ellipsis"
 			});
+=======
+        if ($blArea.length === 0) {
+            $blArea = $('<div id="bl_area">').css({
+				paddingLeft: '15px',
+				marginBottom: '15px'
+			});
+			applyMobileStyles($blArea);
+            $blArea.appendTo($html);
+        }
+        var $listItem = $blArea.find('li.bl_item[data-pos=' + pos + ']');
+        var li = $("<li data-pos=" + pos + " data-bid=" + bid + " class='bl_item'>").data('beer',obj);
+		li.css({
+			backgroundImage: bLabel,
+			backgroundPosition: "0px 4px",
+			backgroundSize: "40px 40px",
+			backgroundRepeat: "no-repeat",
+			padding: "4px 8px 12px 56px", //top, right, bottom, left
+			margin: "0",
+			height: "49px",
+			display: "block",
+			lineHeight: "inherit",
+			boxSizing: "border-box"
+		});
+
+        //creating the initial code to place on the page and placing in hidden input (input_bCode);
+
+        var div_meat = jQuery("<div class='meat'>");
+        var div_bones = jQuery("<div class='bones'>");
+		div_meat.css({
+			display: "inline-block",
+			width: "65%"
+		});
+ 		div_bones.css({
+			display: "inline-block",
+			width: "34%",
+			verticalAlign: "top",
+			marginTop: "4px"
+		});
+        var p_info = jQuery("<p class='info'>")
+			.css({
+				//display: "inline-block",
+				display: "block",
+				height: "56px",
+				margin: "0",
+				paddingTop: "2px",
+				paddingLeft: "8px",
+				lineHeight: "1.3"
+			});
+		var css_span_main = {
+			whiteSpace: "nowrap",
+			overflow: "hidden",
+			textOverflow: "ellipsis",
+		};
+		var css_span_details = {
+			display: "inline-block",
+			color: "#666",
+			fontSize: "0.887em",
+			lineHeight: "1.125em",
+			paddingLeft: "0"
+		};
+        var span_beer = jQuery("<span class='bl_beer'>")
+            .text(bName)
+			.css({
+				display: "block",
+				height: "20px",
+				color: "#333",
+				fontSize: "1.108em",
+				fontWeight: "600"
+			})
+			.css(css_span_main);
+        var span_brewery = jQuery("<span class='bl_brewery'>")
+            .text(rName)
+			.css(css_span_main);
+        var span_location = jQuery("<span class='bl_location'>")
+            .text("(" + rLocation + ")")
+			.css(css_span_main);
+>>>>>>> origin/master
         p_info.append(span_beer);
         p_info.append(span_brewery);
         p_info.append(span_location);
         div_meat.append(p_info);
+<<<<<<< HEAD
         var p_other = jQuery("<p class='other'>")
 			.css("line-height", "1.3");
         var span_style = jQuery("<span class='bl_style'>")
@@ -288,20 +367,109 @@ jQuery.widget("ui.autocomplete", jQuery.ui.autocomplete, {
 				textOverflow: "ellipsis"
 			});
 
+=======
+        var p_other = jQuery("<p class='other'>");
+		p_other.css({
+			display: "block",
+			margin: "0",
+			lineHeight: "1.3"
+		});
+		var css_bones_p_span = {
+			display: "block",
+			whiteSpace: "nowrap",
+			overflow: "hidden",
+			textOverflow: "ellipsis"
+		}
+        var span_style = jQuery("<span class='bl_style'>")
+            .text(bStyle)
+			.css(css_bones_p_span);
+        var span_deets = jQuery("<span class='bl_deets'>")
+            .html('ABV: <span class="bl_abv">' + bABV + '</span>%' + (bIBU === '' ? '' : ', IBU: <span class="bl_ibu">' + bIBU + '</span>'))
+			.css(css_bones_p_span);
+>>>>>>> origin/master
 		var span_hidden = jQuery("<span class='bl_code' style='display:none'>");
         p_other.append(span_style);
         p_other.append(span_deets);
         div_bones.append(p_other);
         li.append(div_meat);
         li.append(div_bones);
+<<<<<<< HEAD
 
         if ($listItem.length === 0)
 			$ul.append("\n<!----------" + bName + "---------->\n" + li.get()[0].outerHTML)
+=======
+		li.find('span:not(.bl_beer)')
+			.css(css_span_details);
+		span_location.css('padding-left','3px');
+		li.find('.bl_brewery, .bl_style, .bl_deets')
+			.css({
+				color: "#666",
+				fontSize: "0.887em",
+				lineHeight: "1.125em",
+				paddingLeft: "0"
+			});
+		li.find('.bl_abv, .bl_ibu')
+			.css({
+				fontSize: "1em",
+				verticalAlign: "bottom"
+			});
+		li.hover(
+			function(){
+				$(this).css({
+					backgroundColor: "#eee",
+					cursor: "pointer"
+				});
+			},
+			function(){
+				$(this).css({
+					backgroundColor: "inherit",
+					cursor: "inherit"
+				});
+			});
+
+        if ($listItem.length === 0)
+			$blArea.append("\n<!----------" + bName + "---------->\n" + li.get()[0].outerHTML)
+>>>>>>> origin/master
         else
             $listItem.replaceWith(li.get()[0].outerHTML);
 
         $editor.val($html.html());
     }
+<<<<<<< HEAD
+=======
+	
+	function applyMobileStyles($area){
+		if(!$area)
+			$area = $('#bl_area');
+		
+		var mobile_css = "<style>" +
+						"@media screen and (max-width: 550px) {" + 
+							"#bl_area .bl_item .meat {" +
+								"width: 100%;" + 
+							"}" + 
+							"#bl_area .bl_item .bones {" + 
+								"display:none;" + 
+							"}" + 
+							"#bl_area .bl_item .bl_beer {" + 
+								"height: 16px;" + 
+							"}" + 
+							"#bl_area .bl_item .info .bl_location{" + 
+								"display:none;" + 
+							"}" + 
+							"#bl_area{" + 
+								"padding-left: 0px;" + 
+							"}" + 
+							"#bl_area .bl_item {" + 
+								"padding-left: 44px;" + 
+							"}" + 
+							"#bl_area .bl_item .info {" + 
+								"padding-left: 0px;" + 
+							"}" + 
+						"}" + 
+						"</style>";
+		$area.append(mobile_css);
+	}
+>>>>>>> origin/master
 
     function updateItemsFromHtml(editor_html) {
         var $html = $('<div>');
